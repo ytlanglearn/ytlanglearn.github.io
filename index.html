@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style type="text/css">
+      html, body {
+        border: 0;
+        margin: 0;
+        padding: 0;
+
+        background-color: #111;
+        color: #aaa;
+        font-family: 'Roboto', sans-serif;
+        font-size: 12pt;
+      }
+
+      a {
+        color: #88f;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      ol li {
+        padding-top: 3px;
+        padding-bottom: 3px;
+      }
+
+      #dialog {
+        z-index: 100;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        height: 400px;
+        margin-left: -200px;
+        margin-top: -200px;
+        background-color: rgba(0,0,0,0.3);
+        padding: 20px;
+        overflow: hidden;
+      }
+      label {
+        user-select: none;
+      }
+      #url { width: 600px; }
+      #dialog h1 {
+        font-family: 'Roboto', sans-serif;
+        font-size: 30px;
+        font-weight: normal;
+        user-select: none;
+      }
+      #dialog input, #dialog button, #dialog select {
+        font-size: 20px;
+      }
+      #dialog input {
+        width: 320px;
+      }
+      #dialog button {
+        width: 200px;
+      }
+
+      #lang {
+        border: 1px solid rgba(255,255,255,0.3);
+      }
+      #lang div {
+        padding-bottom: 5px;
+      }
+      #lang div:hover {
+        cursor: pointer;
+        background-color: rgba(255,255,255,0.1);
+        color: #88f;
+      }
+
+      #subtitle {
+        padding: 5px;
+        color: #222;
+        font-family: Arial, sans-serif;
+        font-size: 35px;
+      }
+      #hint {
+        color: #a22;
+        font-size: 25px;
+      }
+      .label-autopause {
+        background-color: rgba(255,255,255,0.1)
+      }
+
+      .container-player {
+        z-index: 0;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .container-bottom {
+        z-index: 1;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+      }
+      .container-bottom-left {
+        float: left;
+        background-color: #bbb;
+      }
+      .container-bottom-right {
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dialog">
+      <div id="step1">
+        <h1>Enter YouTube link:</h1>
+        <div>
+          <input type="text" name="url" id="url"
+                 placeholder="https://www.youtube.com/watch?v=..."/>
+        </div>
+        <div>
+          <p>
+            This is a tool for learning a new language by watching YouTube videos
+            that have transcripts.
+          </p>
+          <ol>
+            <li>Enter a YouTube link and hit <b>enter</b>.</li>
+            <li>The player will automatically pause at each subtitle
+            <li>Press <b>space</b> to continue to the next subtitle.</li>
+          </ol>
+          <p>
+            If part of the video is easy for you, simply uncheck <b>auto-pause</b>
+            (bottom-right corner).
+          </p>
+          <p>
+            Inspired by <a href="https://languagelearningwithnetflix.com/">Language Learning with Netflix</a>.
+          </p>
+        </div>
+      </div>
+      <div id="step2" style="display: none;">
+        <h1>2. Pick subtitle language:</h1>
+        <div name="lang" id="lang"></div>
+      </div>
+    </div>
+
+    <div class="container-player">
+      <div id="player"></div>
+    </div>
+    <div class="container-bottom">
+      <div class="container-bottom-left">
+        <div id="subtitle"></div>
+        <div id="hint">Press <i>space</i> to proceed to the next subtitle.</div>
+      </div>
+      <div class="container-bottom-right">
+        <label class="label-autopause" for="autopause">auto-pause</label>
+        <input type="checkbox" id="autopause" name="autopause" checked />
+      </div>
+    </div>
+
+    <script src="//www.youtube.com/iframe_api" type="text/javascript"></script>
+<script>var _0x50f0=['stringify','https://www.youtube.com/api/timedtext?v=','&fmt=srv3&','responseXML','textContent','trim','player','100%','data','ENDED','PAUSED','none','zh-Hant','zh-CN','open','GET','onload','onerror','send','length','floor','videoIdRegexs','getElementById','subtitle','autopause','log','getPlayerState','PlayerState','PLAYING','pauseVideo','innerText','addEventListener','keydown','key','preventDefault','url','Enter','target','value','dataset','videoId','disabled','lang','cloneNode','parentNode','replaceChild','https://video.google.com/timedtext?hl=en&type=list&v=','then','getElementsByTagName','attributes','lang_code','lang=','translate','sort','createElement','click','appendChild','createTextNode','step1','display','style','catch','error','hint','ERROR:\x20'];(function(_0x534f90,_0x3ea2d5){var _0x3ee3fa=function(_0x44b739){while(--_0x44b739){_0x534f90['push'](_0x534f90['shift']());}};_0x3ee3fa(++_0x3ea2d5);}(_0x50f0,0x1d3));var _0x4c9b=function(_0x3f10ef,_0x4079e0){_0x3f10ef=_0x3f10ef-0x0;var _0x4715fe=_0x50f0[_0x3f10ef];return _0x4715fe;};config={'translate':{'zh-CN':[_0x4c9b('0x0')],'zh-Hant':[_0x4c9b('0x1')]},'videoIdRegexs':[/^([A-Za-z0-9_-]{11})$/,/v=([A-Za-z0-9_-]{11})/,/youtu.be\/([A-Za-z0-9_-]{11})/]};const get=function(_0x3b80be){return new Promise(function(_0xee1ff4,_0x290c64){var _0x8e2444=new XMLHttpRequest();_0x8e2444[_0x4c9b('0x2')](_0x4c9b('0x3'),_0x3b80be);_0x8e2444[_0x4c9b('0x4')]=()=>_0xee1ff4(_0x8e2444);_0x8e2444[_0x4c9b('0x5')]=()=>_0x290c64(_0x8e2444);_0x8e2444[_0x4c9b('0x6')]();});};const findMatchingSub=function(_0x1cf258,_0x135eda){let _0x394d80=0x0,_0x21e408=_0x1cf258[_0x4c9b('0x7')]-0x1;while(_0x394d80<=_0x21e408){let _0x1fae84=Math[_0x4c9b('0x8')]((_0x394d80+_0x21e408)/0x2);let _0x132846=_0x1cf258[_0x1fae84][0x0];let _0x58d613=_0x132846+_0x1cf258[_0x1fae84][0x1];if(_0x132846<=_0x135eda&&_0x135eda<=_0x58d613){return _0x1fae84;}else if(_0x58d613<_0x135eda){_0x394d80=_0x1fae84+0x1;}else{_0x21e408=_0x1fae84-0x1;}}return-0x1;};const matchVideoId=function(_0x3b78c9){var _0x207abf;for(let _0x1dfb7b of config[_0x4c9b('0x9')]){if(_0x207abf=_0x3b78c9['match'](_0x1dfb7b))return _0x207abf[0x1];}return null;};var ytReady=![];var player;var intervalHandle;var subtitle;var prevSub=null;var justPaused=![];const subElem=document[_0x4c9b('0xa')](_0x4c9b('0xb'));const autopause=document[_0x4c9b('0xa')](_0x4c9b('0xc'));const updateSubtitle=function(){const _0x99c860=player['getCurrentTime']()*0x3e8;const _0x26a529=findMatchingSub(subtitle,_0x99c860);console[_0x4c9b('0xd')](_0x26a529);if((_0x26a529<0x0||_0x26a529!==prevSub)&&prevSub!==null&&player[_0x4c9b('0xe')]()==YT[_0x4c9b('0xf')][_0x4c9b('0x10')]&&autopause['checked']){player[_0x4c9b('0x11')]();justPaused=!![];}if(_0x26a529>=0x0&&_0x26a529!=prevSub&&!justPaused){subElem[_0x4c9b('0x12')]=subtitle[_0x26a529][0x2];prevSub=_0x26a529;}if(_0x26a529>=0x1){hideHint();}};window[_0x4c9b('0x13')](_0x4c9b('0x14'),function(_0x51f8f5){if(_0x51f8f5[_0x4c9b('0x15')]==='\x20'&&player){if(player[_0x4c9b('0xe')]()==YT[_0x4c9b('0xf')]['PLAYING']){player[_0x4c9b('0x11')]();}else{player['playVideo']();}_0x51f8f5[_0x4c9b('0x16')]();}});function onYouTubeIframeAPIReady(){ytReady=!![];}document['getElementById'](_0x4c9b('0x17'))[_0x4c9b('0x13')](_0x4c9b('0x14'),function(_0xe3549a){if(_0xe3549a[_0x4c9b('0x15')]===_0x4c9b('0x18')){const _0x4792cd=matchVideoId(_0xe3549a[_0x4c9b('0x19')][_0x4c9b('0x1a')]);console['log']('user\x20entered\x20url\x20with\x20ID:',_0x4792cd);if(_0x4792cd){_0xe3549a[_0x4c9b('0x19')][_0x4c9b('0x1b')][_0x4c9b('0x1c')]=_0x4792cd;_0xe3549a[_0x4c9b('0x19')][_0x4c9b('0x1d')]=_0x4c9b('0x1d');const _0x45a0e8=document[_0x4c9b('0xa')](_0x4c9b('0x1e'));const _0x3f3b33=_0x45a0e8[_0x4c9b('0x1f')](![]);_0x45a0e8[_0x4c9b('0x20')][_0x4c9b('0x21')](_0x3f3b33,_0x45a0e8);get(_0x4c9b('0x22')+_0x4792cd)[_0x4c9b('0x23')](_0x48f643=>{const _0x5ee6b4=_0x48f643['responseXML'];for(let _0x3ed63c of _0x5ee6b4[_0x4c9b('0x24')]('track')){const _0x43a0b6=_0x3ed63c[_0x4c9b('0x25')][_0x4c9b('0x26')]['value'];const _0x149f5a=[[_0x4c9b('0x27')+_0x43a0b6,_0x43a0b6]];if(config[_0x4c9b('0x28')][_0x43a0b6]){for(let _0xefa472 of config['translate'][_0x43a0b6])_0x149f5a['push'](['lang='+_0x43a0b6+'&tlang='+_0xefa472,_0xefa472+'\x20(from\x20'+_0x43a0b6+')']);}_0x149f5a[_0x4c9b('0x29')]((_0x33981c,_0x1a7a98)=>_0x33981c[0x1]>_0x1a7a98[0x1]?0x1:-0x1);for(let _0x292402 of _0x149f5a){const _0x5bd22f=document[_0x4c9b('0x2a')]('div');_0x5bd22f['dataset']['qs']=_0x292402[0x0];_0x5bd22f[_0x4c9b('0x13')](_0x4c9b('0x2b'),step2ClickListener);_0x5bd22f[_0x4c9b('0x2c')](document[_0x4c9b('0x2d')](_0x292402[0x1]));_0x3f3b33['appendChild'](_0x5bd22f);}}document[_0x4c9b('0xa')](_0x4c9b('0x2e'))['style'][_0x4c9b('0x2f')]='none';document[_0x4c9b('0xa')]('step2')[_0x4c9b('0x30')][_0x4c9b('0x2f')]='';})[_0x4c9b('0x31')](_0xe3549a=>{console[_0x4c9b('0x32')](_0xe3549a);document[_0x4c9b('0xa')](_0x4c9b('0x33'))[_0x4c9b('0x12')]=_0x4c9b('0x34')+JSON[_0x4c9b('0x35')](_0xe3549a);});}}});function step2ClickListener(_0x5a0899){document['getElementById']('dialog')[_0x4c9b('0x30')][_0x4c9b('0x2f')]='none';document['getElementById'](_0x4c9b('0x2e'))['style'][_0x4c9b('0x2f')]='';document['getElementById']('step2')[_0x4c9b('0x30')]['display']='none';showHint();const _0x2cbe9b=document[_0x4c9b('0xa')](_0x4c9b('0x17'))[_0x4c9b('0x1b')][_0x4c9b('0x1c')];const _0x2f5af3=_0x5a0899[_0x4c9b('0x19')];const _0x1f4132=_0x2f5af3[_0x4c9b('0x1b')]['qs'];loadVideo(_0x2cbe9b,_0x1f4132);_0x5a0899[_0x4c9b('0x16')]();};const loadVideo=function(_0x1c601d,_0x38037b){get(_0x4c9b('0x36')+_0x1c601d+_0x4c9b('0x37')+_0x38037b)[_0x4c9b('0x23')](_0x5a5bfb=>{const _0x2715fe=_0x5a5bfb[_0x4c9b('0x38')];subtitle=[];for(let _0x1eb16a of _0x2715fe[_0x4c9b('0x24')]('p')){const _0x3ed2a9=parseInt(_0x1eb16a['attributes']['t']['value']);const _0x2388b2=parseInt(_0x1eb16a['attributes']['d'][_0x4c9b('0x1a')]);const _0x4fefe3=_0x1eb16a[_0x4c9b('0x39')][_0x4c9b('0x3a')]();if(_0x4fefe3[_0x4c9b('0x7')]>0x0)subtitle['push']([_0x3ed2a9,_0x2388b2,_0x4fefe3]);}console[_0x4c9b('0xd')](subtitle);});player=new YT['Player'](_0x4c9b('0x3b'),{'height':_0x4c9b('0x3c'),'width':_0x4c9b('0x3c'),'videoId':_0x1c601d,'events':{'onReady':function(_0x7cd55a){},'onStateChange':function(_0x27e36e){if(_0x27e36e['data']==YT['PlayerState'][_0x4c9b('0x10')]&&justPaused)justPaused=![];if(_0x27e36e[_0x4c9b('0x3d')]==YT[_0x4c9b('0xf')][_0x4c9b('0x10')]&&!intervalHandle){intervalHandle=setInterval(updateSubtitle,0x32);}else if([YT[_0x4c9b('0xf')][_0x4c9b('0x3e')],YT['PlayerState'][_0x4c9b('0x3f')]]['includes'](_0x27e36e[_0x4c9b('0x3d')])&&intervalHandle){clearInterval(intervalHandle);intervalHandle=undefined;prevSub=null;}}}});};const showHint=function(){document[_0x4c9b('0xa')](_0x4c9b('0x33'))[_0x4c9b('0x30')][_0x4c9b('0x2f')]='';};const hideHint=function(){document['getElementById']('hint')['style']['display']=_0x4c9b('0x40');};</script>
+  </body>
+</html>
